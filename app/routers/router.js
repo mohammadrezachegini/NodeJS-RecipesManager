@@ -1,11 +1,14 @@
 const router = require('express').Router();
 
 const { userAuthRoutes } = require("./users/auth");
-// const {coffeeRoutes} = require("./coffees/coffee")
+const { recipeRoutes } = require("./recipe/recipe"); // Adjust the path as necessary
 
-router.use("/user", userAuthRoutes)
+// User authentication routes
+router.use("/user", userAuthRoutes);
 
+// Recipe management routes
+router.use("/recipe", recipeRoutes);
 
 module.exports = {
     AllRoutes: router
-}
+};

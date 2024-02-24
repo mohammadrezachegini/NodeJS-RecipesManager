@@ -5,7 +5,6 @@ const UserSchema = new mongoose.Schema({
     first_name : {type:String},
     last_name : {type:String},
     email : {type:String, required: true, unique: true,lowercase: true},
-    numberOfRecipes: { type: Number, required: true },
     password : {type:String, required: true},
     refreshToken:{type:String, default:"0"},
 

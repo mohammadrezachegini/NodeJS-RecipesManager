@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const { RecipeController } = require("../../http/controllers/recipe/recipe.controller"); // Adjust the path as necessary
-const { uploadFile } = require("../../../utils/express-fileUpload"); // Ensure this utility is compatible with recipe images
+const { RecipeController } = require("../../http/controllers/recipe/recipe.controller"); 
+const { uploadFile } = require("../../../utils/express-fileUpload");
 const fileupload = require("express-fileupload");
 const { mongoIDValidator } = require("../../http/validators/public");
 

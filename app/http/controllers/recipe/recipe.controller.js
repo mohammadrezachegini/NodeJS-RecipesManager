@@ -1,4 +1,4 @@
-const RecipeModel = require("../../../models/recipe"); // Adjust the path as necessary
+const RecipeModel = require("../../../models/recipe"); 
 const { isValidObjectId } = require("mongoose");
 const { createLink } = require("../../../../utils/function");
 const fileUpload = require("express-fileupload");
@@ -18,7 +18,7 @@ class RecipeControllers {
         instructions,
         time,
         level,
-        image: image.name // Assuming you'll handle the file saving elsewhere and store the filename or path here
+        image: image.name 
       });
 
       if (!result) throw { status: 400, message: "There was a problem adding the recipe" };
@@ -37,7 +37,7 @@ class RecipeControllers {
     try {
       const recipes = await RecipeModel.find({});
       recipes.forEach(recipe => {
-        recipe.image = createLink(recipe.image, req); // Ensure createLink handles recipe images appropriately
+        recipe.image = createLink(recipe.image, req); 
       });
 
       return res.status(200).json({

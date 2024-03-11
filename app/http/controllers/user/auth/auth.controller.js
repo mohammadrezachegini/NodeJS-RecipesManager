@@ -25,7 +25,33 @@ class AuthControllers{
     }
 
 
+    async getUserByEmail(email) {
+      try {
+        const user = await UserModel.findOne({ email });
+        return user;
+      } catch (error) {
+        throw error;
+      }
+    }
+  
+    async getUserById(req,res,next) {
+      try {
+        const userID = req.params.id;
+        console.log("User ID: " + userID);
+        const user = await UserModel.findById(userID);
+        if (!user) throw { status: 404, message: "User not found" };
+  
+  
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          user
+        });
+      } catch (error) {
+        next(error);
+      }
 
+    }
     async login(req,res,next){
         try {
             const { email, password } = req.body;
@@ -72,15 +98,11 @@ class AuthControllers{
     async logout(req,res,next){
         try {
             const { userId } = req.body;
-            // deleteRefreshToken(refreshToken)
             console.log(req.body);
             const user = await UserModel.findOne({ userId })
             console.log("LOGOUT USERRRRRRR ID " + userId );
             console.log("LOGOUT USERRRRRRR " + user );
-            // const user = await UserModel.findOne({ userId })
-            // 
-            // console.log("done");
-            // await UserModel.findOne({ user._id  })
+
             await UserModel.findOneAndUpdate({ _id: userId }, { refreshToken: "0" }, { new: true })
             .then(async (users) => {
               return res.status(200).json({
@@ -93,9 +115,6 @@ class AuthControllers{
                 }
               })
             })
-            
-            // const user = await UserModel.findOne({ userId }, { accessToken: 0})
-            // await UserModel.findOneAndUpdate({ _id: user._id }, { accessToken: "", refreshToken: "null" })
             
           } catch (error) {
             next(error)

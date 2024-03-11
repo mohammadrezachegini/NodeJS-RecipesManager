@@ -144,6 +144,69 @@ router.post("/login",authController.login)
 router.post("/logout",authController.logout)
 
 
+
+/**
+ * @swagger
+ *  /user/{id}:
+ *    get:
+ *      summary: Get user by ID
+ *      tags: [User-Authentication]
+ *      description: Retrieve user information by user ID
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          description: User ID
+ *          required: true
+ *          schema:
+ *            type: string
+ *          example: 60c21a40c7b5f548c49d47d1
+ *      responses:
+ *        200:
+ *          description: Success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  status:
+ *                    type: number
+ *                    description: HTTP status code
+ *                    example: 200
+ *                  success:
+ *                    type: boolean
+ *                    description: Indicates whether the request was successful
+ *                    example: true
+ *                  user:
+ *                    type: object
+ *                    description: User information
+ *                    properties:
+ *                      _id:
+ *                        type: string
+ *                        description: User ID
+ *                      first_name:
+ *                        type: string
+ *                        description: First name of the user
+ *                      last_name:
+ *                        type: string
+ *                        description: Last name of the user
+ *                      email:
+ *                        type: string
+ *                        description: Email address of the user
+ *                      createdAt:
+ *                        type: string
+ *                        format: date-time
+ *                        description: Date and time when the user was created
+ *                      updatedAt:
+ *                        type: string
+ *                        format: date-time
+ *                        description: Date and time when the user was last updated
+ *        404:
+ *          description: User not found
+ *        500:
+ *          description: Internal Server Error
+*/
+router.get("/:id", authController.getUserById);
+
 module.exports = {
     userAuthRoutes: router
 }

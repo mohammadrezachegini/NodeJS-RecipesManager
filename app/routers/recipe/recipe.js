@@ -11,6 +11,31 @@ const { mongoIDValidator } = require("../../http/validators/public");
  *  description: Recipes management section      
 */
 
+
+/**
+ * @swagger
+ * /recipe/search:
+ *   get:
+ *     summary: Search recipes by keyword
+ *     tags: [Recipes]
+ *     description: Search for recipes containing a specific keyword in the title, ingredients, or instructions
+ *     parameters:
+ *       - in: query
+ *         name: keyword
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Keyword to search for
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get("/search", RecipeController.searchRecipes);
+
 /**
  * @swagger
  *  /recipe/create:
@@ -200,6 +225,12 @@ router.put("/edit/:id", RecipeController.updateRecipe);
  *         description: Internal Server Error
 */
 router.patch("/edit-image/:id", fileupload(), uploadFile, mongoIDValidator(), RecipeController.updateRecipeImage);
+
+
+
+
+
+
 
 module.exports = {
     recipeRoutes: router

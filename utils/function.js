@@ -76,14 +76,23 @@ function createUploadPath(){
     const month = d.getMonth() + "";
     const day = "" + d.getDay();
     const uploadPath = path.join(__dirname, "..", "public", "upload", year, month, day)
+    console.log(uploadPath)
     console.log("dir is ",path.join(__dirname));
     fs.mkdirSync(uploadPath, {recursive: true})
     return path.join("public", "upload", year, month, day)
 }
 
 
-function createLink(fileAddress,req){
-    return  fileAddress? (req.protocol + "://" + req.get("host")  + "/"+ (fileAddress.replace(/[\\\\]/gm, "/"))) : undefined
+function createLink(fileAddress, req) {
+    // Check if fileAddress exists and is not empty
+    if (fileAddress) {
+        // Remove "public" from the fileAddress if it exists
+        const cleanAddress = fileAddress.replace(/^public\//, '');
+        // Construct the full URL without "public"
+        return req.protocol + "://" + req.get("host") + "/" + cleanAddress.replace(/[\\]/gm, "/");
+    } else {
+        return undefined;
+    }
 }
 
 

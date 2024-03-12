@@ -1,4 +1,4 @@
-const fileupload = require("express-fileupload");
+const fileupload = require("./express-fileUpload");
 const path = require("path");
 const { createUploadPath } = require("./function");
 
@@ -16,18 +16,19 @@ const uploadFile = async (req, res, next) => {
             throw { status: 400, message: "Unsupported file format. Allowed formats: .png, .jpg, .jpeg, .webp, .gif" };
         }
 
-        const imageName = `${Date.now()}${type}`; 
-        console.log("Uploading image ----> " + imageName);
-        const imagePath = path.join(createUploadPath(), imageName);
-        const uploadPath = path.join(__dirname, "..", imagePath);
+        // Rename the image with a unique name (timestamp + extension)
+        const imageName = `${Date.now()}${type}`;
+        
+        // Define the upload path
+        const uploadPath = path.join(createUploadPath(), imageName);
 
-        image.mv(uploadPath, (err) => {
-            if (err) {
-                throw { status: 500, message: "Failed to upload the image." };
-            }
-            req.body.image = imagePath;
-            next();
-        });
+        // Move the uploaded image to the defined upload path
+        await image.mv(uploadPath);
+
+        // Store the image path in the request body for later use
+        req.body.image = uploadPath;
+
+        next();
     } catch (error) {
         next(error);
     }

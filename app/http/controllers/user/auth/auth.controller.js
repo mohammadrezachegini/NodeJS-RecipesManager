@@ -34,24 +34,42 @@ class AuthControllers{
       }
     }
   
-    async getUserById(req,res,next) {
-      try {
-        const userID = req.params.id;
-        console.log("User ID: " + userID);
-        const user = await UserModel.findById(userID);
-        if (!user) throw { status: 404, message: "User not found" };
+    // async getUserById(req,res,next) {
+    //   try {
+    //     const userID = req.params.id;
+    //     console.log("User ID: " + userID);
+    //     const user = await UserModel.findById(userID);
+    //     if (!user) throw { status: 404, message: "User not found" };
   
   
-        return res.status(200).json({
-          status: 200,
-          success: true,
-          user
-        });
-      } catch (error) {
-        next(error);
-      }
+    //     return res.status(200).json({
+    //       status: 200,
+    //       success: true,
+    //       user
+    //     });
+    //   } catch (error) {
+    //     next(error);
+    //   }
 
+    // }
+
+
+    async getUserById(req, res, next) {
+    try {
+        const userID = req.params.id;
+        const user = await UserModel.findById(userID).populate('recipes'); // Populate the recipes array
+
+        if (!user) throw { status: 404, message: "User not found" };
+
+        return res.status(200).json({
+            status: 200,
+            success: true,
+            user
+        });
+    } catch (error) {
+        next(error);
     }
+}
     async login(req,res,next){
         try {
             const { email, password } = req.body;

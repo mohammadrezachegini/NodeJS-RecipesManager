@@ -16,7 +16,10 @@ class RecipeControllers {
         const image = req.files.image;
 
         const ingredientsArray = Array.isArray(ingredients) ? ingredients : ingredients.split(',');
-        const ingredientsWithHashtags = ingredientsArray.map(ingredient => `#${ingredient.trim()}`);
+        const ingredientsWithHashtags = ingredientsArray.map(ingredient => `${ingredient.trim()}`);
+
+        const instructionsArray = Array.isArray(instructions) ? instructions : instructions.split(',');
+        const instructionsWithHashtags = instructionsArray.map(instruction => `${instruction.trim()}`);
 
         // Check if any file is uploaded
         if (!image) {
@@ -44,7 +47,7 @@ class RecipeControllers {
             title,
             chef,
             ingredients: ingredientsWithHashtags,
-            instructions,
+            instructions:instructionsWithHashtags,
             time,
             level,
             image: fullUrl

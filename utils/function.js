@@ -83,29 +83,7 @@ function createUploadPath(){
 }
 
 
-// function createLink(fileAddress, req) {
-//     // Check if fileAddress exists and is not empty
-//     if (fileAddress) {
-//         // Remove "public" from the fileAddress if it exists
-//         const cleanAddress = fileAddress.replace(/^public\//, '');
-//         // Construct the full URL without "public"
-//         return req.protocol + "://" + req.get("host") + "/" + cleanAddress.replace(/[\\]/gm, "/");
-//     } else {
-//         return undefined;
-//     }
-// }
-// function createLink(fileAddress, req) {
-//     if (fileAddress) {
-//         if (/^https?:\/\//.test(fileAddress)) {
-//             return fileAddress; 
-//         } else {
-//             const cleanAddress = fileAddress.replace("/public", "");
-//             return `${req.protocol}://${req.get("host")}/${cleanAddress.replace(/[\\]/gm, "/")}`;
-//         }
-//     } else {
-//         return undefined;
-//     }
-// }
+
 
 function createLink(fileAddress, req) {
     if (fileAddress) {

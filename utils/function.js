@@ -83,13 +83,41 @@ function createUploadPath(){
 }
 
 
+// function createLink(fileAddress, req) {
+//     // Check if fileAddress exists and is not empty
+//     if (fileAddress) {
+//         // Remove "public" from the fileAddress if it exists
+//         const cleanAddress = fileAddress.replace(/^public\//, '');
+//         // Construct the full URL without "public"
+//         return req.protocol + "://" + req.get("host") + "/" + cleanAddress.replace(/[\\]/gm, "/");
+//     } else {
+//         return undefined;
+//     }
+// }
+// function createLink(fileAddress, req) {
+//     if (fileAddress) {
+//         if (/^https?:\/\//.test(fileAddress)) {
+//             return fileAddress; 
+//         } else {
+//             const cleanAddress = fileAddress.replace("/public", "");
+//             return `${req.protocol}://${req.get("host")}/${cleanAddress.replace(/[\\]/gm, "/")}`;
+//         }
+//     } else {
+//         return undefined;
+//     }
+// }
+
 function createLink(fileAddress, req) {
-    // Check if fileAddress exists and is not empty
     if (fileAddress) {
-        // Remove "public" from the fileAddress if it exists
-        const cleanAddress = fileAddress.replace(/^public\//, '');
-        // Construct the full URL without "public"
-        return req.protocol + "://" + req.get("host") + "/" + cleanAddress.replace(/[\\]/gm, "/");
+        // Directly return the fileAddress if it is already a full URL, assuming no need to modify these
+        if (/^https?:\/\//.test(fileAddress)) {
+            // Here, you might also check and remove '/public/' from full URLs if needed
+            return fileAddress.replace('/public/', '/'); 
+        } else {
+            // For relative paths, ensure 'public/' is removed and construct the URL
+            const cleanAddress = fileAddress.replace(/^public\//, '').replace(/[\\]/gm, "/");
+            return `${req.protocol}://${req.get("host")}/${cleanAddress}`;
+        }
     } else {
         return undefined;
     }

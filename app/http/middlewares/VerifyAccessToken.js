@@ -1,24 +1,42 @@
-const createError = require("http-errors")
-const jwt = require("jsonwebtoken");
-const { ACCESS_TOKEN_SECRET_KEY } = require("../../../utils/constants");
-const { UserModel } = require("../../models/user");
-function VerifyAccessToken(req,res,next){
+// Importing necessary modules and configurations
+const createError = require("http-errors") // Module to create HTTP errors for Express
+const jwt = require("jsonwebtoken"); // Module to handle JWT operations
+const { ACCESS_TOKEN_SECRET_KEY } = require("../../../utils/constants"); // Importing the secret key used to sign JWTs
+const { UserModel } = require("../../models/user"); // User model for database operations
+
+// Defining the VerifyAccessToken middleware function
+function VerifyAccessToken(req, res, next){
+    // Extracting headers from the request
     const headers = req.headers;
-    const [bearer, token] =  headers?.["access-token"]?.split(" ") || []
-    if(token && ["Bearer","bearer"].includes(bearer)){
+    // Destructuring to extract the 'Bearer' keyword and the token from the 'access-token' header
+    const [bearer, token] =  headers?.["access-token"]?.split(" ") || [];
+    // Checking if the token exists and has the correct 'Bearer' format
+    if(token && ["Bearer", "bearer"].includes(bearer)){
+        // Verifying the token using the secret key
         jwt.verify(token, ACCESS_TOKEN_SECRET_KEY, async  (err, payload) => {
-            if(err) return next(createError.Unauthorized("Please Log in into your account"))
+            // If token verification fails, respond with an Unauthorized error
+            if(err) return next(createError.Unauthorized("Please Log in into your account"));
+            // Extracting the email from the token's payload
             const {email} = payload || {};
-            const user = await UserModel.findOne({email}, {otp:0 , password:0 })
-            if(!user) return next(createError.Unauthorized("Username not found"))
+            // Finding the user in the database, excluding sensitive information like otp and password
+            const user = await UserModel.findOne({email}, {otp:0, password:0 });
+            // If no user is found, respond with an Unauthorized error
+            if(!user) return next(createError.Unauthorized("Username not found"));
+            // Attaching the user object to the request for use in subsequent middleware/functions
             req.user = user;
+            // Logging the user object for debugging purposes
             console.log(req.user);
-            return next()
-        })
+            // Proceeding to the next middleware/function in the stack
+            return next();
+        });
     }  
-    else return next(createError.Unauthorized("please Login into your account"));
+    else {
+        // If the token or 'Bearer' format is missing, respond with an Unauthorized error
+        return next(createError.Unauthorized("Please log in to your account"));
+    }
 }
 
+// Exporting VerifyAccessToken for use as middleware in other parts of the application
 module.exports = {
     VerifyAccessToken
-}
+};

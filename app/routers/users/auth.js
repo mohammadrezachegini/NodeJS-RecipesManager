@@ -88,25 +88,7 @@ router.post("/register", authController.register)
 router.post("/login",authController.login)
 
 
-/**
- * @swagger
- *  /user/refresh-token:
- *      post:
- *          summary: send refresh token to get new token and refresh token
- *          tags: [User-Authentication] 
- *          description :  Refresh Token
- *          parameters:
- *              -   in: body
- *                  required: true
- *                  type: string
- *                  name: refreshToken    
- *          responses:
- *              200:
- *                  description : success
- *             
-*/
 
-// router.post("/refresh-token",authController.refreshToken)
 
 
 

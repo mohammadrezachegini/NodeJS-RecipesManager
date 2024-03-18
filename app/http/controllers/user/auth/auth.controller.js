@@ -25,15 +25,7 @@ class AuthControllers{
     }
 
 
-    async getUserByEmail(email) {
-      try {
-        const user = await UserModel.findOne({ email });
-        return user;
-      } catch (error) {
-        throw error;
-      }
-    }
-  
+
     // async getUserById(req,res,next) {
     //   try {
     //     const userID = req.params.id;

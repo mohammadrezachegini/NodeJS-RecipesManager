@@ -85,21 +85,42 @@ function createUploadPath(){
 
 
 
+// function createLink(fileAddress, req) {
+//     if (fileAddress) {
+//         // Directly return the fileAddress if it is already a full URL, assuming no need to modify these
+//         if (/^https?:\/\//.test(fileAddress)) {
+//             // Here, you might also check and remove '/public/' from full URLs if needed
+//             return fileAddress.replace('/public/', '/'); 
+//         } else {
+//             // For relative paths, ensure 'public/' is removed and construct the URL
+//             const cleanAddress = fileAddress.replace(/^public\//, '').replace(/[\\]/gm, "/");
+//             return `${req.protocol}://${req.get("host")}/${cleanAddress}`;
+//         }
+//     } else {
+//         return undefined;
+//     }
+// }
+
+
 function createLink(fileAddress, req) {
     if (fileAddress) {
+        // Normalize file paths across OS by replacing backslashes with forward slashes.
+        const normalizedAddress = fileAddress.replace(/\\/g, "/");
+
         // Directly return the fileAddress if it is already a full URL, assuming no need to modify these
-        if (/^https?:\/\//.test(fileAddress)) {
+        if (/^https?:\/\//.test(normalizedAddress)) {
             // Here, you might also check and remove '/public/' from full URLs if needed
-            return fileAddress.replace('/public/', '/'); 
+            return normalizedAddress.replace('/public/', '/');
         } else {
             // For relative paths, ensure 'public/' is removed and construct the URL
-            const cleanAddress = fileAddress.replace(/^public\//, '').replace(/[\\]/gm, "/");
+            const cleanAddress = normalizedAddress.replace(/^public\//, '');
             return `${req.protocol}://${req.get("host")}/${cleanAddress}`;
         }
     } else {
         return undefined;
     }
 }
+
 
 
 module.exports = {

@@ -17,7 +17,6 @@ class RecipeControllers {
   constructor() {
   }
 
-  // Method to create a new recipe
   async createRecipe(req, res, next) {
     try {
       // Destructuring request body to extract recipe details
@@ -86,7 +85,6 @@ class RecipeControllers {
     }
   }
 
-  // Method to search for recipes based on a keyword
   async searchRecipes(req, res, next) {
     try {
       const { keyword } = req.query; // Extracting search keyword from query parameters
@@ -222,7 +220,6 @@ class RecipeControllers {
   }
 }
 
-// Exporting an instance of RecipeControllers for use elsewhere in the application
 module.exports = {
   RecipeController: new RecipeControllers()
 };

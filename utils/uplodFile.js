@@ -1,9 +1,8 @@
 // Importing required modules and libraries
-const fileupload = require("./express-fileUpload"); // Assuming this is a custom file upload module
+const fileupload = require("./express-fileUpload"); 
 const path = require("path");
 const { createUploadPath } = require("./function");
 
-// Middleware function to handle file uploads
 const uploadFile = async (req, res, next) => {
     try {
         // Checking if the request contains files and the 'image' file is present
@@ -41,7 +40,6 @@ const uploadFile = async (req, res, next) => {
     }
 };
 
-// Exporting the uploadFile middleware function for use in other parts of the application
 module.exports = {
     uploadFile
 };

@@ -44,7 +44,6 @@ const uploadFile = async (req, res, next) => {
     }
 };
 
-// Exporting the uploadFile middleware function for use in other parts of the application
 module.exports = {
     uploadFile
 };

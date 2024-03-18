@@ -1,8 +1,11 @@
-// Importing necessary modules and configurations
-const createError = require("http-errors") // Module to create HTTP errors for Express
-const jwt = require("jsonwebtoken"); // Module to handle JWT operations
-const { ACCESS_TOKEN_SECRET_KEY } = require("../../../utils/constants"); // Importing the secret key used to sign JWTs
-const { UserModel } = require("../../models/user"); // User model for database operations
+// Module to create HTTP errors for Express
+const createError = require("http-errors") 
+// Module to handle JWT operations
+const jwt = require("jsonwebtoken"); 
+// Importing the secret key used to sign JWTs
+const { ACCESS_TOKEN_SECRET_KEY } = require("../../../utils/constants"); 
+// User model for database operations
+const { UserModel } = require("../../models/user"); 
 
 // Defining the VerifyAccessToken middleware function
 function VerifyAccessToken(req, res, next){
@@ -36,7 +39,6 @@ function VerifyAccessToken(req, res, next){
     }
 }
 
-// Exporting VerifyAccessToken for use as middleware in other parts of the application
 module.exports = {
     VerifyAccessToken
 };

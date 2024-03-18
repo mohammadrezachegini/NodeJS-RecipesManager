@@ -1,5 +1,5 @@
 // Importing necessary utilities and models
-const {HashString, deleteAccessToken, deleteRefreshToken, SignAccessToken, SignRefreshToken} = require('../../../../../utils/function');
+const {HashString, SignAccessToken, SignRefreshToken} = require('../../../../../utils/function');
 const {UserModel} = require('../../../../models/user');
 const bcrypt = require("bcrypt");
 
@@ -7,7 +7,6 @@ class AuthControllers {
 
 
 
-  // Method to register a new user
   async register(req, res, next){
       try {
           // Destructuring to extract user input from the request body
@@ -32,7 +31,6 @@ class AuthControllers {
       }
   }
 
-  // Method to get a user by their ID
   async getUserById(req, res, next) {
     try {
         // Extracting the user ID from the request parameters
@@ -100,7 +98,6 @@ class AuthControllers {
     }
 }
 
-  // Method for user logout
   async logout(req,res,next){
     try {
         // Extracting userId from the request body
@@ -132,7 +129,6 @@ class AuthControllers {
 }
 
 
-      // Method to refresh the access token using the refresh token
   async refreshToken(req,res,next){
     try {
         // Extracting the refreshToken from the request body
@@ -156,11 +152,9 @@ class AuthControllers {
     }
 }
 
-        // Method to check if a user exists by their email
   async checkExistUser(email) {
     // Finding the user by email
     const user = await UserModel.findOne({ email });
-    // Returning the user object if found
     return user;
 }
 }

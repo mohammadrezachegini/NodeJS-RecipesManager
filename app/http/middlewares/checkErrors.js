@@ -1,7 +1,6 @@
 // Importing validationResult from express-validator to extract validation results from a request
 const {validationResult} = require("express-validator");
 
-// Defining the expressValidatorMapper function
 function expressValidatorMapper(req, res, next) {
     // Initialize an empty object to store validation error messages
     let messages = {};
@@ -27,7 +26,6 @@ function expressValidatorMapper(req, res, next) {
     next();
 }
 
-// Exporting the expressValidatorMapper function to be used as middleware in other parts of the application
 module.exports = {
     expressValidatorMapper
 };

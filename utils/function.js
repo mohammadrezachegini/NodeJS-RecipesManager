@@ -13,11 +13,6 @@ function HashString(str){
     return bcrypt.hashSync(str, salt);
 }
 
-// Function to generate a random number between 10000 and 99999
-function randomNumberGenerator() {
-    return Math.floor((Math.random() * 90000) + 10000 );
-}
-
 // Function to sign an access token using JWT
 function SignAccessToken(userId){
     return new Promise(async (resolve, reject)=> {
@@ -83,9 +78,7 @@ function createLink(fileAddress, req) {
     }
 }
 
-// Exporting utility functions for use in other parts of the application
 module.exports = {
-    randomNumberGenerator,
     SignAccessToken,
     SignRefreshToken,
     HashString,

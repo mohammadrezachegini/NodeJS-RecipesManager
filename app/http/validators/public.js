@@ -1,7 +1,5 @@
-// Importing the necessary function from express-validator
 const {param} = require("express-validator");
 
-// Defining a function to create a validation chain
 function mongoIDValidator(){
     return [
         // Validates that the 'id' route parameter is a valid MongoDB Object ID
@@ -10,7 +8,6 @@ function mongoIDValidator(){
     ];
 }
 
-// Exporting the mongoIDValidator function for use in route definitions
 module.exports = {
     mongoIDValidator
 };

@@ -4,7 +4,6 @@
 const RecipeModel = require("../../../models/recipe");
  // Helper function to validate MongoDB Object IDs 
 const { isValidObjectId } = require("mongoose");
- // Utility functions for handling file paths and URLs
 const { createLink, createUploadPath } = require("../../../../utils/function");
  // Middleware for handling file uploads
 const fileUpload = require("express-fileupload");
@@ -13,9 +12,18 @@ const { UserModel } = require('../../../models/user');
 // Node.js module for handling file paths
 const path = require("path"); 
 
+
+const OpenAI = require('openai');
+
+const openai = new OpenAI({
+  apiKey: "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"
+});
 class RecipeControllers {
+
   constructor() {
-  }
+
+}
+
 
   async createRecipe(req, res, next) {
     try {
@@ -87,9 +95,8 @@ class RecipeControllers {
 
   async searchRecipes(req, res, next) {
     try {
-      const { keyword } = req.query; // Extracting search keyword from query parameters
+      const { keyword } = req.query;
 
-      // Defining search criteria to find recipes by title, ingredients, or instructions
       const searchCriteria = {
         $or: [
           { title: { $regex: keyword, $options: 'i' } },
@@ -98,10 +105,8 @@ class RecipeControllers {
         ]
       };
 
-      // Performing search in the database
       const recipes = await RecipeModel.find(searchCriteria);
 
-      // Handling case when no recipes are found
       if (recipes.length === 0) {
         return res.status(200).json({
           status: 200,
@@ -119,67 +124,52 @@ class RecipeControllers {
         recipes
       });
     } catch (error) {
-      // Passing errors to the error-handling middleware
       next(error);
     }
   }
 
-  // Method to retrieve all recipes
   async getAllRecipes(req, res, next) {
     try {
-      // Fetching all recipes from the database
       const recipes = await RecipeModel.find({});
 
-      // Updating recipe image URLs
       recipes.forEach(recipe => {
         recipe.image = createLink(recipe.image, req);
       });
 
-      // Sending response with all recipes
       return res.status(200).json({
         status: 200,
         success: true,
         recipes
       });
     } catch (error) {
-      // Passing errors to the error-handling middleware
       next(error);
     }
   }
 
-  // Method to retrieve a single recipe by ID
   async getRecipeById(req, res, next) {
     try {
-      // Extracting recipe ID from request parameters
       const recipeID = req.params.id; 
       const recipe = await RecipeModel.findById(recipeID);
 
-      // Handling case when the specified recipe is not found
       if (!recipe) throw { status: 404, message: "Recipe not found" };
 
-      // Updating recipe image URL
       recipe.image = createLink(recipe.image, req);
 
-      // Sending response with the requested recipe
       return res.status(200).json({
         status: 200,
         success: true,
         recipe
       });
     } catch (error) {
-      // Passing errors to the error-handling middleware
       next(error);
     }
   }
 
-  // Method to remove a recipe by ID
   async removeRecipe(req, res, next) {
     try {
-      // Extracting recipe ID from request parameters
       const recipeID = req.params.id; 
       const recipe = await RecipeModel.findById(recipeID);
 
-      // Handling case when the specified recipe is not found
       if (!recipe) {
         return res.status(404).json({
           status: 404,
@@ -188,10 +178,8 @@ class RecipeControllers {
         });
       }
 
-      // Deleting the specified recipe from the database
       const deleteResult = await RecipeModel.deleteOne({ _id: recipeID });
 
-      // Handling case when deletion was not successful
       if (deleteResult.deletedCount === 0) {
         return res.status(400).json({
           status: 400,
@@ -200,25 +188,62 @@ class RecipeControllers {
         });
       }
 
-      // Updating the chef's recipe count and list
       const user = await UserModel.findById(recipe.chef);
       if (user) {
         user.numberOfRecipes -= 1;
         await user.save();
       }
 
-      // Sending response with success message
       return res.status(200).json({
         status: 200,
         success: true,
         message: "Recipe deleted successfully"
       });
     } catch (error) {
-      // Passing errors to the error-handling middleware
       next(error);
     }
   }
+
+
+  async getGptResponse(req, res, next) {
+    try {
+      const { prompt } = req.body;
+      console.log(prompt);
+      
+      if (!prompt) {
+        return res.status(400).json({ error: "Prompt is required." });
+      }
+
+
+  
+      // Adjusting API call according to the OpenAI SDK's expected usage
+
+      const completionResponse = await openai.chat.completions.create ({
+        model: "gpt-3.5-turbo",
+        messages: [{
+          role: "user",
+          content: prompt
+        }],
+        max_tokens: 150,
+      });
+
+      
+      console.log(completionResponse.choices[0].message.content);
+
+      res.status(200).json({ response: completionResponse.choices[0].message.content });
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
 }
+  
+ 
+
+
+
+
+
 
 module.exports = {
   RecipeController: new RecipeControllers()

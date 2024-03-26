@@ -156,6 +156,46 @@ router.delete("/remove/:id", mongoIDValidator(), RecipeController.removeRecipe);
 
 
 
+
+/**
+ * @swagger
+ * /recipe/chatgpt:
+ *   post:
+ *     summary: Get response from ChatGPT
+ *     tags:
+ *       - Recipes
+ *     description: Get response from ChatGPT based on the provided prompt
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: Prompt for ChatGPT
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             prompt:
+ *               type: string
+ *               example: "Tell me a joke."
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         schema:
+ *           type: object
+ *           properties:
+ *             response:
+ *               type: string
+ *               example: "Sure, here's a joke: Why don't scientists trust atoms? Because they make up everything!"
+ *       '400':
+ *         description: Invalid input
+ *       '500':
+ *         description: Internal server error
+ */
+router.post("/chatgpt", RecipeController.getGptResponse);
+
 module.exports = {
     recipeRoutes: router
 };

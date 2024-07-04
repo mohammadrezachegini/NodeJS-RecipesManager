@@ -1,70 +1,160 @@
-# CSIS4495-Project
+# NodeJS-RecipesManager
 
-# Project Overview
+## Project Overview
+NodeJS-RecipesManager is a robust web-based platform designed to manage culinary recipes. It offers APIs to add, retrieve, and display recipes, facilitating user interactions in a structured and secure manner.
 
-This application is a robust web-based platform designed to allow users to manage culinary recipes. It offers APIs to add, retrieve, and display recipes, facilitating user interactions in a structured and secure manner. Below is a breakdown of the system components and their functionalities within this context.
+## Features
+- **Recipe Management:** Add, retrieve, update, and delete recipes.
+- **User Authentication:** Secure user login and registration.
+- **File Uploads:** Handle recipe image uploads.
+- **API Documentation:** Auto-generated API documentation using Swagger.
 
-## Directory Structure
+## Requirements
+- Node.js
+- MongoDB
+
+## Installation
+
+1. **Clone the repository:**
+    ```sh
+    git clone https://github.com/mohammadrezachegini/NodeJS-RecipesManager.git
+    cd NodeJS-RecipesManager
+    ```
+
+2. **Install dependencies:**
+    ```sh
+    npm install
+    ```
+
+3. **Create a `.env` file:**
+    ```sh
+    touch .env
+    ```
+    Fill in the `.env` file with the necessary environment variables (e.g., database URL, JWT secret).
+
+4. **Start the application:**
+    ```sh
+    npm start
+    ```
+
+## Usage
+
+- **Access the application:** Open your browser and navigate to `http://localhost:3000`.
+- **API Documentation:** Navigate to `http://localhost:3000/api-docs` for Swagger-generated API documentation.
+
+## Project Structure
 
 ### `app/`
-The `app` directory serves as the core of the application, hosting the essential architectural components such as routing, server configuration, data models, and HTTP management.
 
 #### `routers/`
-This subdirectory manages all routing mechanisms, facilitating navigation and functionality across different parts of the application.
-
-- **`recipe/`**
-  - `recipe.js`: Manages routes specific to recipe operations, such as creating, retrieving, updating, and deleting recipes. Ensures users can interact seamlessly with recipe data.
-- **`router.js`**: Establishes base routing configurations and integrates various router modules from other subdirectories for streamlined route management.
-- **`users/`**
-  - `auth.js`: Handles authentication routes, providing mechanisms for user login, registration, and access control.
-
-### `server.js`
-- **Server Configuration**: Configures Express server settings, integrating middleware for logging, CORS for cross-origin resource sharing, and error handling to ensure smooth operations.
-- **Database Connection**: Manages MongoDB connections, efficiently handling events like successful connections, disconnections, and connection errors, ensuring database interactions are reliable.
-- **API Documentation**: Utilizes Swagger to automatically generate up-to-date API documentation, making it easier for developers to understand and use the APIs.
-- **Route Management**: Centralizes the management of all routes through the `AllRoutes` module, which loads all application routes, facilitating efficient and organized routing.
-- **Error Handling**: Provides a structured error handling mechanism that standardizes responses for not found and server errors across the API, improving the reliability and maintainability of the application.
+Handles all routing mechanisms:
+- **recipe/recipe.js:** Routes for recipe operations.
+- **router.js:** Base routing configurations.
+- **users/auth.js:** Authentication routes.
 
 #### `models/`
-Contains schemas defining the structure and methods of data objects used within the application, vital for data integrity and operations in the database.
-
-- **`user.js`**: Defines the User model, detailing the schema for user data and including methods for user-related operations.
-- **`recipe.js`**: Represents the Recipe model with attributes specific to culinary recipes, critical for operations involving recipe data.
+Defines schemas and methods for data objects:
+- **user.js:** User schema.
+- **recipe.js:** Recipe schema.
 
 #### `http/`
-Organizes the HTTP interface handling, including middlewares, validators, and controllers, to streamline request processing and response handling.
+Organizes HTTP interface handling:
+- **middlewares/VerifyAccessToken.js:** Middleware to ensure requests have valid access tokens.
+- **middlewares/checkErrors.js:** Middleware for error handling.
+- **validators/public.js:** Validation logic for incoming requests.
+- **controllers/recipe/recipe.controller.js:** Manages recipe operations.
+- **controllers/user/auth/auth.controller.js:** Manages authentication processes.
 
-- **`middlewares/`**
-  - `VerifyAccessToken.js`: Ensures that each secured request is accompanied by a valid access token, thereby securing routes that require user authentication.
-  - `checkErrors.js`: Captures and handles errors during request processing, facilitating smoother error management and response.
-- **`validators/`**
-  - `public.js`: Implements validation for public-facing interfaces, ensuring data integrity and preventing malformed data from affecting backend processes.
-- **`controllers/`**
-  - **`recipe/`**
-    - `recipe.controller.js`: Manages business logic for recipe operations, interfacing between the recipe routes and the database.
-  - **`user/`**
-    - **`auth/`**
-      - `auth.controller.js`: Controls authentication processes, including user verification and token generation, crucial for secure user access.
-### `Controllers\`
-#### Recipe Management
-- Users can **add** new recipes via a POST API, which captures essential recipe details and stores them in the database.
-- Recipes can be **retrieved** through GET APIs, allowing users to view a list of all recipes or specific details of a single recipe.
-- The application also supports the **display** of recipes, enabling users to browse through various culinary creations seamlessly.
+#### `modules/`
+Utility scripts that enhance functionality:
+- **fileUploads.js:** Handles file uploading mechanisms.
 
-#### User Authentication
-- The application includes robust user authentication mechanisms, allowing for secure user registration and login processes.
-
-### `index.js`
-The entry point script for the application, responsible for initializing and bootstrapping the application components.
-
+### `server.js`
+- **Server Configuration:** Configures Express server settings and middleware.
+- **Database Connection:** Manages MongoDB connections.
+- **API Documentation:** Uses Swagger for API documentation.
+- **Route Management:** Centralizes route management through the `AllRoutes` module.
+- **Error Handling:** Standardizes error responses.
 
 ### `utils/`
-Utility scripts and helpers that provide additional functionality across the application.
+Utility scripts:
+- **constants.js:** Centralizes constant values.
+- **uploadFile.js:** Facilitates file uploads.
+- **function.js:** Contains reusable code blocks.
+- **express-fileUpload.js:** Configures file upload middleware.
+- **secret_key_generator.js:** Generates secret keys for security.
 
-- **`constants.js`**: Centralizes constant values used throughout the application, enabling consistent use of these values and easing configuration changes.
-- **`uploadFile.js`**: Facilitates file upload operations, integrating with various parts of the application to handle file storage.
-- **`function.js`**: Contains reusable code blocks that perform common tasks, improving code maintainability and reducing redundancy.
-- **`express-fileUpload.js`**: Configures middleware for handling file uploads, crucial for endpoints that accept file data.
-- **`secret_key_generator.js`**: Generates secret keys for use in authentication and other security-related operations, enhancing the application's security posture.
+### `index.js`
+Entry point script that initializes and bootstraps the application components.
 
+## Environment Variables
+Ensure the `.env` file includes:
+- `PORT`: The port number the server will run on.
+- `MONGO_URI`: The MongoDB connection string.
+- `JWT_SECRET`: Secret key for JWT authentication.
 
+## API Endpoints
+
+### User Authentication
+- `POST /auth/register`: Register a new user.
+- `POST /auth/login`: User login.
+
+### Recipes
+- `POST /recipes`: Add a new recipe.
+- `GET /recipes`: Retrieve all recipes.
+- `GET /recipes/:id`: Retrieve a specific recipe by ID.
+- `PUT /recipes/:id`: Update a recipe by ID.
+- `DELETE /recipes/:id`: Delete a recipe by ID.
+
+## Middleware
+- **VerifyAccessToken.js:** Ensures secured requests have valid access tokens.
+- **checkErrors.js:** Handles validation and runtime errors.
+
+## Validation
+- **public.js:** Validates user input for authentication and recipe operations.
+
+## Controllers
+- **recipe.controller.js:** Contains logic for managing recipes.
+- **auth.controller.js:** Contains logic for user authentication.
+
+## Utility Scripts
+- **constants.js:** Defines application-wide constants.
+- **uploadFile.js:** Utility for handling file uploads.
+- **function.js:** Contains helper functions.
+- **express-fileUpload.js:** Configures the middleware for handling multipart/form-data.
+- **secret_key_generator.js:** Script to generate secret keys for JWT.
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Node.js Community
+- Contributors and Supporters
+
+## Troubleshooting
+- **Database Connection Issues:** Ensure your `.env` file contains the correct database URL.
+- **Runtime Issues:** Check logs for errors and ensure your environment variables are set correctly.
+
+## Contact
+For any issues or questions, please open an issue in the repository or contact the repository owner.
+
+## Screenshots
+
+### Main Screen
+![Main Screen](path/to/screenshot1.png)
+
+### Application Running
+![Application Running](path/to/screenshot2.png)
+
+## Additional Resources
+
+- [Node.js Documentation](https://nodejs.org/en/docs/)
+- [Express Documentation](https://expressjs.com/)
+- [Mongoose Documentation](https://mongoosejs.com/docs/)
+- [JWT Documentation](https://jwt.io/introduction/)
